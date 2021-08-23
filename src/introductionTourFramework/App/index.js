@@ -1,1 +1,1 @@
-export { default as IntroductionTour} from './App';
+export { default as IntroductionTour } from './App';

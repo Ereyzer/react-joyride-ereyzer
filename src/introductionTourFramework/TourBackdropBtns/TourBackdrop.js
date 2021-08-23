@@ -5,6 +5,8 @@ import ApiService from '../helpers/work-with-bakend';
 import ModalMain from '../ModalMain/ModalMain';
 import { NewDom } from '../NewDom/NewDom';
 import Tour from '../Tour/Tour';
+import PropTypes from 'prop-types';
+import { string } from 'prop-types';
 
 const INITIAL_STATE = {
   key: new Date(),
@@ -63,10 +65,7 @@ function TourBackdrop({ className = null, children, config }) {
   const [isModalDescription, setIsModalDescription] = useState(false);
   const [path, setPath] = useState('');
   const backdropRef = useRef(null);
-  const [tourState, dispatchTourState] = useReducer(
-    reducerStepsTour,
-    INITIAL_STATE,
-  );
+  const [tourState, dispatchTourState] = useReducer(reducerStepsTour, INITIAL_STATE);
   // console.log('tourState.steps', tourState.steps);
   const [shownElements, seShownElements] = useState(() =>
     JSON.parse(localStorage.getItem('shownElements')),
@@ -105,17 +104,10 @@ function TourBackdrop({ className = null, children, config }) {
       <div className={className} ref={backdropRef}>
         {children}
         {!isAdminM && !isAdminB && tourState?.steps[0] && <Tour />}
-        {isAdminB && (
-          <TourBtns changeIsStartAddElements={setIsStartAddElements} />
-        )}
+        {isAdminB && <TourBtns changeIsStartAddElements={setIsStartAddElements} />}
       </div>
 
-      {isAdminM && (
-        <ModalMain
-          dispatchModal={dispatchModal}
-          dispatchButton={dispatchButton}
-        />
-      )}
+      {isAdminM && <ModalMain dispatchModal={dispatchModal} dispatchButton={dispatchButton} />}
       {backdropRef.current && isAdminB && isStartAddElements && (
         <NewDom reference={backdropRef.current} />
       )}
@@ -147,5 +139,10 @@ function runOnKeys(func, ...codes) {
   });
 }
 
+TourBackdrop.propTypes = {
+  children: PropTypes.element,
+  className: PropTypes.string,
+  config: PropTypes.object,
+};
 
 export default TourBackdrop;
